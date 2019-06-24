@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+
+try:
+        from PIL import Image
+        import sys
+except:
+        print("Something's wrong with Pillow lib. Please try installing pillow with:")
+        print("pip3 install Pillow")
+        print("Also, check base libs in case that they are missing, depending on your distro.")
+
+
+# first doing checks
+negative = 0
+
+try:
+        PATH = sys.argv[1]
+except:
+        negative = True
+
+if negative:
+        print("SYNTAX: ./predominantcolor <path-to-file>")
+        exit()
+else:
+        #Here is the actual code
+        print("Calculating......")
+        x = 0 #For HEIGHT
+        y = 0 #For WIDTH
+        k = 0 #Final 1st element RGB
+        t = 0 #Final 2nd element RGB
+        q = 0 #Final 3rd element RGB
+        total = 0
+        colors = []
+        color = []
+
+        #Loading the image in the memory
+        img = Image.open(PATH)
+
+        #Processing the image
+        pix = img.load()
+
+        #Getting the entire pixels translated into RGB (one by one)
+        for x in range(0, img.size[0]):
+                for y in range(0, img.size[1]):
+                        # print(x)
+                        # print(y)
+                        # print(pix[x,y])
+                        colors.append(pix[x,y])
+
+        #Calculating the aritmetic average from the colors array 
+        #1st part
+        for r in range(0,len(colors)):
+                total += 1
+                k = k + colors[r][0]
+                t = t + colors[r][1]
+                q = q + colors[r][2]
+
+        #2nd part
+
+        k = int(float(k / total))
+        t = int(float(t / total))
+        q = int(float(q / total))
+
+        print("Predominant RGB: (" + str(k) + ", " + str(t) + ", " + str(q) + ")")
+
+
+
